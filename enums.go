@@ -9,24 +9,26 @@ const (
 	Status_Allow Status = 1
 	Status_Disallow Status = 2
 	Status_PermNotFound Status = 3
-	Status_PermAlreadyGranted Status = 4
-	Status_CookieNotFound Status = 5
-	Status_OptionNotFound Status = 5
-	Status_GroupNotFound Status = 6
-	Status_ChildGroupNotFound Status = 7
-	Status_ParentGroupNotFound Status = 8
-	Status_ActorUserNotFound Status = 9
-	Status_TargetUserNotFound Status = 10
-	Status_GroupAlreadyExist Status = 11
-	Status_UserAlreadyExist Status = 12
-	Status_TemporalGroup Status = 13
-	Status_PermanentGroup Status = 14
-	Status_GroupNotDefined Status = 15
-	Status_CallbackInvalid Status = 16
-	Status_CallbackAlreadyExist Status = 17
-	Status_CallbackNotFound Status = 18
-	Status_StorageError Status = 20
-	Status_DBNotReady Status = 21
+	Status_TemporalGroup Status = 4
+	Status_PermanentGroup Status = 5
+	Status_GroupNotDefined Status = 6
+	Status_ErrorsStart Status = 30
+	Status_PermAlreadyGranted Status = 31
+	Status_CookieNotFound Status = 32
+	Status_OptionNotFound Status = 32
+	Status_GroupNotFound Status = 33
+	Status_ChildGroupNotFound Status = 34
+	Status_ParentGroupNotFound Status = 35
+	Status_GroupAlreadyExist Status = 36
+	Status_GroupHierarchyCycle Status = 37
+	Status_ActorUserNotFound Status = 38
+	Status_TargetUserNotFound Status = 39
+	Status_UserAlreadyExist Status = 40
+	Status_CallbackInvalid Status = 41
+	Status_CallbackAlreadyExist Status = 42
+	Status_CallbackNotFound Status = 43
+	Status_StorageError Status = 44
+	Status_DBNotReady Status = 45
 )
 
 type Action int32
