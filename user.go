@@ -312,7 +312,7 @@ var _AddPermission = func(pluginID int64, targetID uint64, perm string, timestam
 //  @param timestamp: Permission duration
 //  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnUserPermissionChange event. The change is still applied.
 //
-//  @return Success, TargetUserNotFound, PermAlreadyGranted, InvalidPermission, DBNotReady
+//  @return Success, TargetUserNotFound, PermAlreadyGranted, PermConflict, InvalidPermission, DBNotReady
 func AddPermission(pluginID int64, targetID uint64, perm string, timestamp int64, dontBroadcast bool) Status {
 	return _AddPermission(pluginID, targetID, perm, timestamp, dontBroadcast)
 }

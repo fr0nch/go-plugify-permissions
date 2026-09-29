@@ -62,6 +62,8 @@ const (
 	Status_InvalidCookieName Status = 48
 	// InvalidOptionName - Cookie or option name is empty.
 	Status_InvalidOptionName Status = 48
+	// PermConflict - Permission already exists with the opposite state. Use Set* to change it.
+	Status_PermConflict Status = 49
 )
 
 // Action - Kind of change reported to permission and group callbacks.

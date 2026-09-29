@@ -299,7 +299,7 @@ var _AddPermissionGroup = func(pluginID int64, name string, perm string, dontBro
 //  @param perm: Permission line.
 //  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnGroupPermissionChange event. The change is still applied.
 //
-//  @return Success, GroupNotFound, PermAlreadyGranted, InvalidPermission, DBNotReady
+//  @return Success, GroupNotFound, PermAlreadyGranted, PermConflict, InvalidPermission, DBNotReady
 func AddPermissionGroup(pluginID int64, name string, perm string, dontBroadcast bool) Status {
 	return _AddPermissionGroup(pluginID, name, perm, dontBroadcast)
 }
