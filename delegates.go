@@ -6,7 +6,7 @@ var _ = plugify.ApiVersion
 
 // Generated from permissions
 
-// GroupCreateStorageCallback - Callback invoked after a group is successfully created.
+// GroupCreateStorageCallback - Storage callback invoked before a group is created. Return `false` to cancel the change, the method then returns DBNotReady.
 type GroupCreateStorageCallback func(pluginID int64, name string, perms []string, priority int32, parent string) bool
 
 
@@ -14,11 +14,11 @@ type GroupCreateStorageCallback func(pluginID int64, name string, perms []string
 type GroupCreateCallback func(pluginID int64, name string, perms []string, priority int32, parent string)
 
 
-// GroupDeleteStorageCallback - Callback invoked before a group is deleted.
+// GroupDeleteStorageCallback - Storage callback invoked before a group is deleted. Return `false` to cancel the change, the method then returns DBNotReady.
 type GroupDeleteStorageCallback func(pluginID int64, name string) bool
 
 
-// GroupDeleteCallback - Callback invoked before a group is deleted.
+// GroupDeleteCallback - Callback invoked after a group is deleted.
 type GroupDeleteCallback func(pluginID int64, name string)
 
 
@@ -26,7 +26,7 @@ type GroupDeleteCallback func(pluginID int64, name string)
 type GroupExpirationCallback func(targetID uint64, group string)
 
 
-// GroupOptionStorageCallback - Callback invoked when an option value is set for a group.
+// GroupOptionStorageCallback - Storage callback invoked before an option value is set for a group. Return `false` to cancel the change, the method then returns DBNotReady.
 type GroupOptionStorageCallback func(pluginID int64, groupName string, optionName string, value any) bool
 
 
@@ -34,11 +34,11 @@ type GroupOptionStorageCallback func(pluginID int64, groupName string, optionNam
 type GroupOptionCallback func(pluginID int64, groupName string, optionName string, value any)
 
 
-// GroupPermissionStorageCallback - Callback invoked when a permission is added or removed from a group.
+// GroupPermissionStorageCallback - Storage callback invoked before a permission is added, replaced, or removed from a group. Return `false` to cancel the change, the method then returns DBNotReady.
 type GroupPermissionStorageCallback func(pluginID int64, action Action, groupName string, perm string, oldState Status, newState Status) bool
 
 
-// GroupPermissionCallback - Callback invoked when a permission is added or removed from a group.
+// GroupPermissionCallback - Callback invoked when a permission is added, replaced, or removed from a group.
 type GroupPermissionCallback func(pluginID int64, action Action, groupName string, perm string, oldState Status, newState Status)
 
 
@@ -46,11 +46,15 @@ type GroupPermissionCallback func(pluginID int64, action Action, groupName strin
 type LoadGroupsCallback func(pluginID int64) bool
 
 
+// GroupsLoadedCallback - Called when server groups have been loaded.
+type GroupsLoadedCallback func(pluginID int64)
+
+
 // PermExpirationCallback - Callback invoked when a permission in user has been expired.
 type PermExpirationCallback func(targetID uint64, perm string, state Status)
 
 
-// SetParentStorageCallback - Callback invoked when a parent group is set for a child group.
+// SetParentStorageCallback - Storage callback invoked before a parent group is set for a child group. Return `false` to cancel the change, the method then returns DBNotReady.
 type SetParentStorageCallback func(pluginID int64, childName string, parentName string) bool
 
 
@@ -58,7 +62,7 @@ type SetParentStorageCallback func(pluginID int64, childName string, parentName 
 type SetParentCallback func(pluginID int64, childName string, parentName string)
 
 
-// UserCookieStorageCallback - Callback invoked when a cookie is set for a user.
+// UserCookieStorageCallback - Storage callback invoked before a cookie is set for a user. Return `false` to cancel the change, the method then returns DBNotReady.
 type UserCookieStorageCallback func(pluginID int64, targetID uint64, name string, cookie any) bool
 
 
@@ -66,31 +70,23 @@ type UserCookieStorageCallback func(pluginID int64, targetID uint64, name string
 type UserCookieCallback func(pluginID int64, targetID uint64, name string, cookie any)
 
 
-// UserCreateStorageCallback - Callback invoked after a user is successfully created.
-type UserCreateStorageCallback func(pluginID int64, targetID uint64, immunity int32, offline bool, groupNames []string) bool
-
-
 // UserCreateCallback - Callback invoked after a user is successfully created.
 type UserCreateCallback func(pluginID int64, targetID uint64, immunity int32, offline bool, groupNames []string)
 
 
-// UserDeleteStorageCallback - Callback invoked before a user is deleted.
-type UserDeleteStorageCallback func(pluginID int64, targetID uint64) bool
-
-
-// UserDeleteCallback - Callback invoked before a user is deleted.
+// UserDeleteCallback - Callback invoked after a user is deleted.
 type UserDeleteCallback func(pluginID int64, targetID uint64)
 
 
-// UserGroupStorageCallback - Callback invoked when a group is added or removed from a user.
+// UserGroupStorageCallback - Storage callback invoked before a group is added, replaced, or removed for a user. Return `false` to cancel the change, the method then returns DBNotReady.
 type UserGroupStorageCallback func(pluginID int64, action Action, targetID uint64, group string, oldTimestamp int64, newTimestamp int64) bool
 
 
-// UserGroupCallback - Callback invoked when a group is added or removed from a user.
+// UserGroupCallback - Callback invoked when a group is added, replaced, or removed for a user.
 type UserGroupCallback func(pluginID int64, action Action, targetID uint64, group string, oldTimestamp int64, newTimestamp int64)
 
 
-// UserImmunityStorageCallback - Callback invoked when immunity is set for a user.
+// UserImmunityStorageCallback - Storage callback invoked before immunity is set for a user. Return `false` to cancel the change, the method then returns DBNotReady.
 type UserImmunityStorageCallback func(pluginID int64, targetID uint64, immunity int32) bool
 
 
@@ -102,7 +98,7 @@ type UserImmunityCallback func(pluginID int64, targetID uint64, immunity int32)
 type UserLoadedCallback func(pluginID int64, targetID uint64, playerState PlayerState)
 
 
-// UserPermissionStorageCallback - Callback invoked when a permission is added, removed, or replaced for a user.
+// UserPermissionStorageCallback - Storage callback invoked before a permission is added, replaced, or removed for a user. Return `false` to cancel the change, the method then returns DBNotReady.
 type UserPermissionStorageCallback func(pluginID int64, action Action, targetID uint64, perm string, oldState Status, newState Status, oldTimestamp int64, newTimestamp int64) bool
 
 

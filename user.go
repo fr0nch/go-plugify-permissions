@@ -277,8 +277,9 @@ var _SetImmunity = func(pluginID int64, targetID uint64, immunity int32, dontBro
 //  @param pluginID: Identifier of the plugin that calls the method.
 //  @param targetID: Player ID.
 //  @param immunity: Immunity.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnUserImmunityChange event. The change is still applied.
 //
-//  @return Success, TargetUserNotFound
+//  @return Success, TargetUserNotFound, DBNotReady
 func SetImmunity(pluginID int64, targetID uint64, immunity int32, dontBroadcast bool) Status {
 	return _SetImmunity(pluginID, targetID, immunity, dontBroadcast)
 }
@@ -309,9 +310,9 @@ var _AddPermission = func(pluginID int64, targetID uint64, perm string, timestam
 //  @param targetID: Player ID.
 //  @param perm: Permission line.
 //  @param timestamp: Permission duration
-//  @param dontBroadcast: If set to `true`, suppresses dispatching of the permission change event to registered UserPermission listeners. The permission is still applied internally.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnUserPermissionChange event. The change is still applied.
 //
-//  @return Success, TargetUserNotFound, PermAlreadyGranted
+//  @return Success, TargetUserNotFound, PermAlreadyGranted, InvalidPermission, DBNotReady
 func AddPermission(pluginID int64, targetID uint64, perm string, timestamp int64, dontBroadcast bool) Status {
 	return _AddPermission(pluginID, targetID, perm, timestamp, dontBroadcast)
 }
@@ -342,9 +343,9 @@ var _SetPermission = func(pluginID int64, targetID uint64, perm string, timestam
 //  @param targetID: Player ID.
 //  @param perm: Permission line.
 //  @param timestamp: Permission duration
-//  @param dontBroadcast: If set to `true`, suppresses dispatching of the permission change event to registered UserPermission listeners. The permission is still applied internally.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnUserPermissionChange event. The change is still applied.
 //
-//  @return Success, TargetUserNotFound, PermAlreadyGranted
+//  @return Success, TargetUserNotFound, PermAlreadyGranted, InvalidPermission, DBNotReady
 func SetPermission(pluginID int64, targetID uint64, perm string, timestamp int64, dontBroadcast bool) Status {
 	return _SetPermission(pluginID, targetID, perm, timestamp, dontBroadcast)
 }
@@ -375,8 +376,9 @@ var _RemovePermission = func(pluginID int64, targetID uint64, perm string, recur
 //  @param targetID: Player ID.
 //  @param perm: Permission line.
 //  @param recursiveDeletion: Delete all nested perms.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnUserPermissionChange event. The change is still applied.
 //
-//  @return Success, TargetUserNotFound, PermNotFound
+//  @return Success, TargetUserNotFound, PermNotFound, InvalidPermission, DBNotReady
 func RemovePermission(pluginID int64, targetID uint64, perm string, recursiveDeletion bool, dontBroadcast bool) Status {
 	return _RemovePermission(pluginID, targetID, perm, recursiveDeletion, dontBroadcast)
 }
@@ -407,9 +409,9 @@ var _AddGroup = func(pluginID int64, targetID uint64, groupName string, timestam
 //  @param targetID: Player ID.
 //  @param groupName: Group name.
 //  @param timestamp: Group duration.
-//  @param dontBroadcast: If set to `true`, suppresses dispatching of the group change event to registered UserGroup listeners. The group is still applied internally.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnUserGroupChange event. The change is still applied.
 //
-//  @return Success, TargetUserNotFound, GroupNotFound, GroupAlreadyExist
+//  @return Success, TargetUserNotFound, GroupNotFound, GroupAlreadyExist, DBNotReady
 func AddGroup(pluginID int64, targetID uint64, groupName string, timestamp int64, dontBroadcast bool) Status {
 	return _AddGroup(pluginID, targetID, groupName, timestamp, dontBroadcast)
 }
@@ -438,8 +440,9 @@ var _RemoveGroup = func(pluginID int64, targetID uint64, groupName string, dontB
 //  @param pluginID: Identifier of the plugin that calls the method.
 //  @param targetID: Player ID.
 //  @param groupName: Group name.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnUserGroupChange event. The change is still applied.
 //
-//  @return Success, TargetUserNotFound, ChildGroupNotFound, ParentGroupNotFound
+//  @return Success, TargetUserNotFound, GroupNotFound, GroupNotDefined, DBNotReady
 func RemoveGroup(pluginID int64, targetID uint64, groupName string, dontBroadcast bool) Status {
 	return _RemoveGroup(pluginID, targetID, groupName, dontBroadcast)
 }
@@ -503,9 +506,9 @@ var _SetCookie = func(pluginID int64, targetID uint64, name string, cookie any, 
 //  @param targetID: Player ID.
 //  @param name: Cookie name.
 //  @param cookie: Cookie value.
-//  @param dontBroadcast: If set to `true`, suppresses dispatching of the cookie change event to registered UserSetCookie listeners. The cookie is still applied internally.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnUserCookieChange event. The change is still applied.
 //
-//  @return Success, TargetUserNotFound
+//  @return Success, TargetUserNotFound, InvalidCookieName, DBNotReady
 func SetCookie(pluginID int64, targetID uint64, name string, cookie any, dontBroadcast bool) Status {
 	return _SetCookie(pluginID, targetID, name, cookie, dontBroadcast)
 }
@@ -571,7 +574,7 @@ var _CreateUser = func(pluginID int64, targetID uint64, immunity int32, offline 
 //  @param offline: Create as fake player.
 //  @param groupsList: Array of groups to inherit ("group timestamp").
 //
-//  @return Success, UserAlreadyExist, GroupNotFound, ChildGroupNotFound
+//  @return Success, UserAlreadyExist, GroupNotFound
 func CreateUser(pluginID int64, targetID uint64, immunity int32, offline bool, groupsList []string) Status {
 	return _CreateUser(pluginID, targetID, immunity, offline, groupsList)
 }
@@ -665,6 +668,9 @@ var _LoadUser = func(pluginID int64, targetID uint64, username string, offline b
 //  @param targetID: PlayerID of the user to be loaded.
 //  @param username: The user's current username. Intended for synchronizing the username with external storage (e.g. updating an existing record or setting it during initial user creation).
 //  @param offline: Indicates whether the user's data was loaded without user presence on server.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnUserLoaded event.
+//
+//  @return Success, DBNotReady
 func LoadUser(pluginID int64, targetID uint64, username string, offline bool, dontBroadcast bool) Status {
 	return _LoadUser(pluginID, targetID, username, offline, dontBroadcast)
 }

@@ -60,6 +60,12 @@ PLUGIFY_EXPORT int32_t (*__permissions_OnGroupsLoad_Register)(void*) = NULL;
 PLUGIFY_EXPORT int32_t (*__permissions_OnGroupsLoad_Unregister)(void*) = NULL;
 
 
+PLUGIFY_EXPORT int32_t (*__permissions_OnGroupsLoaded_Register)(void*) = NULL;
+
+
+PLUGIFY_EXPORT int32_t (*__permissions_OnGroupsLoaded_Unregister)(void*) = NULL;
+
+
 PLUGIFY_EXPORT int32_t (*__permissions_OnPermissionExpiration_Register)(void*) = NULL;
 
 
@@ -90,22 +96,10 @@ PLUGIFY_EXPORT int32_t (*__permissions_OnUserCookieChange_Register)(void*) = NUL
 PLUGIFY_EXPORT int32_t (*__permissions_OnUserCookieChange_Unregister)(void*) = NULL;
 
 
-PLUGIFY_EXPORT int32_t (*__permissions_OnUserCreateStorage_Register)(void*) = NULL;
-
-
-PLUGIFY_EXPORT int32_t (*__permissions_OnUserCreateStorage_Unregister)(void*) = NULL;
-
-
 PLUGIFY_EXPORT int32_t (*__permissions_OnUserCreate_Register)(void*) = NULL;
 
 
 PLUGIFY_EXPORT int32_t (*__permissions_OnUserCreate_Unregister)(void*) = NULL;
-
-
-PLUGIFY_EXPORT int32_t (*__permissions_OnUserDeleteStorage_Register)(void*) = NULL;
-
-
-PLUGIFY_EXPORT int32_t (*__permissions_OnUserDeleteStorage_Unregister)(void*) = NULL;
 
 
 PLUGIFY_EXPORT int32_t (*__permissions_OnUserDelete_Register)(void*) = NULL;

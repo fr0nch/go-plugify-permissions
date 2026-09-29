@@ -122,6 +122,18 @@ static int32_t OnGroupsLoad_Unregister(void* callback) {
 	return __permissions_OnGroupsLoad_Unregister(callback);
 }
 
+extern int32_t (*__permissions_OnGroupsLoaded_Register)(void*);
+
+static int32_t OnGroupsLoaded_Register(void* callback) {
+	return __permissions_OnGroupsLoaded_Register(callback);
+}
+
+extern int32_t (*__permissions_OnGroupsLoaded_Unregister)(void*);
+
+static int32_t OnGroupsLoaded_Unregister(void* callback) {
+	return __permissions_OnGroupsLoaded_Unregister(callback);
+}
+
 extern int32_t (*__permissions_OnPermissionExpiration_Register)(void*);
 
 static int32_t OnPermissionExpiration_Register(void* callback) {
@@ -182,18 +194,6 @@ static int32_t OnUserCookieChange_Unregister(void* callback) {
 	return __permissions_OnUserCookieChange_Unregister(callback);
 }
 
-extern int32_t (*__permissions_OnUserCreateStorage_Register)(void*);
-
-static int32_t OnUserCreateStorage_Register(void* callback) {
-	return __permissions_OnUserCreateStorage_Register(callback);
-}
-
-extern int32_t (*__permissions_OnUserCreateStorage_Unregister)(void*);
-
-static int32_t OnUserCreateStorage_Unregister(void* callback) {
-	return __permissions_OnUserCreateStorage_Unregister(callback);
-}
-
 extern int32_t (*__permissions_OnUserCreate_Register)(void*);
 
 static int32_t OnUserCreate_Register(void* callback) {
@@ -204,18 +204,6 @@ extern int32_t (*__permissions_OnUserCreate_Unregister)(void*);
 
 static int32_t OnUserCreate_Unregister(void* callback) {
 	return __permissions_OnUserCreate_Unregister(callback);
-}
-
-extern int32_t (*__permissions_OnUserDeleteStorage_Register)(void*);
-
-static int32_t OnUserDeleteStorage_Register(void* callback) {
-	return __permissions_OnUserDeleteStorage_Register(callback);
-}
-
-extern int32_t (*__permissions_OnUserDeleteStorage_Unregister)(void*);
-
-static int32_t OnUserDeleteStorage_Unregister(void* callback) {
-	return __permissions_OnUserDeleteStorage_Unregister(callback);
 }
 
 extern int32_t (*__permissions_OnUserDelete_Register)(void*);

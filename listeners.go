@@ -22,6 +22,8 @@ package permissions
 #cgo noescape OnGroupPermissionChange_Unregister
 #cgo noescape OnGroupsLoad_Register
 #cgo noescape OnGroupsLoad_Unregister
+#cgo noescape OnGroupsLoaded_Register
+#cgo noescape OnGroupsLoaded_Unregister
 #cgo noescape OnPermissionExpiration_Register
 #cgo noescape OnPermissionExpiration_Unregister
 #cgo noescape OnSetParentStorage_Register
@@ -32,12 +34,8 @@ package permissions
 #cgo noescape OnUserCookieChangeStorage_Unregister
 #cgo noescape OnUserCookieChange_Register
 #cgo noescape OnUserCookieChange_Unregister
-#cgo noescape OnUserCreateStorage_Register
-#cgo noescape OnUserCreateStorage_Unregister
 #cgo noescape OnUserCreate_Register
 #cgo noescape OnUserCreate_Unregister
-#cgo noescape OnUserDeleteStorage_Register
-#cgo noescape OnUserDeleteStorage_Unregister
 #cgo noescape OnUserDelete_Register
 #cgo noescape OnUserDelete_Unregister
 #cgo noescape OnUserGroupChangeStorage_Register
@@ -82,7 +80,7 @@ var _OnGroupCreateStorage_Register = func(callback GroupCreateStorageCallback) S
 }
 
 // OnGroupCreateStorage_Register 
-//  @brief Registers a listener for the OnGroupCreateStorage event. Callback invoked after a group is successfully created.
+//  @brief Registers a listener for the OnGroupCreateStorage event. Storage callback invoked before a group is created. Return `false` to cancel the change, the method then returns DBNotReady.
 //
 //  @param callback: The callback to register.
 func OnGroupCreateStorage_Register(callback GroupCreateStorageCallback) Status {
@@ -142,7 +140,7 @@ var _OnGroupDeleteStorage_Register = func(callback GroupDeleteStorageCallback) S
 }
 
 // OnGroupDeleteStorage_Register 
-//  @brief Registers a listener for the OnGroupDeleteStorage event. Callback invoked before a group is deleted.
+//  @brief Registers a listener for the OnGroupDeleteStorage event. Storage callback invoked before a group is deleted. Return `false` to cancel the change, the method then returns DBNotReady.
 //
 //  @param callback: The callback to register.
 func OnGroupDeleteStorage_Register(callback GroupDeleteStorageCallback) Status {
@@ -172,7 +170,7 @@ var _OnGroupDelete_Register = func(callback GroupDeleteCallback) Status {
 }
 
 // OnGroupDelete_Register 
-//  @brief Registers a listener for the OnGroupDelete event. Callback invoked before a group is deleted.
+//  @brief Registers a listener for the OnGroupDelete event. Callback invoked after a group is deleted.
 //
 //  @param callback: The callback to register.
 func OnGroupDelete_Register(callback GroupDeleteCallback) Status {
@@ -232,7 +230,7 @@ var _OnGroupOptionChangeStorage_Register = func(callback GroupOptionStorageCallb
 }
 
 // OnGroupOptionChangeStorage_Register 
-//  @brief Registers a listener for the OnGroupOptionChangeStorage event. Callback invoked when an option value is set for a group.
+//  @brief Registers a listener for the OnGroupOptionChangeStorage event. Storage callback invoked before an option value is set for a group. Return `false` to cancel the change, the method then returns DBNotReady.
 //
 //  @param callback: The callback to register.
 func OnGroupOptionChangeStorage_Register(callback GroupOptionStorageCallback) Status {
@@ -292,7 +290,7 @@ var _OnGroupPermissionChangeStorage_Register = func(callback GroupPermissionStor
 }
 
 // OnGroupPermissionChangeStorage_Register 
-//  @brief Registers a listener for the OnGroupPermissionChangeStorage event. Callback invoked when a permission is added or removed from a group.
+//  @brief Registers a listener for the OnGroupPermissionChangeStorage event. Storage callback invoked before a permission is added, replaced, or removed from a group. Return `false` to cancel the change, the method then returns DBNotReady.
 //
 //  @param callback: The callback to register.
 func OnGroupPermissionChangeStorage_Register(callback GroupPermissionStorageCallback) Status {
@@ -322,7 +320,7 @@ var _OnGroupPermissionChange_Register = func(callback GroupPermissionCallback) S
 }
 
 // OnGroupPermissionChange_Register 
-//  @brief Registers a listener for the OnGroupPermissionChange event. Callback invoked when a permission is added or removed from a group.
+//  @brief Registers a listener for the OnGroupPermissionChange event. Callback invoked when a permission is added, replaced, or removed from a group.
 //
 //  @param callback: The callback to register.
 func OnGroupPermissionChange_Register(callback GroupPermissionCallback) Status {
@@ -374,6 +372,36 @@ func OnGroupsLoad_Unregister(callback LoadGroupsCallback) Status {
 	return _OnGroupsLoad_Unregister(callback)
 }
 
+var _OnGroupsLoaded_Register = func(callback GroupsLoadedCallback) Status {
+	var __retVal Status
+	__callback := plugify.GetFunctionPointerForDelegate(callback)
+	__retVal = Status(C.OnGroupsLoaded_Register(__callback))
+	return __retVal
+}
+
+// OnGroupsLoaded_Register 
+//  @brief Registers a listener for the OnGroupsLoaded event. Called when server groups have been loaded.
+//
+//  @param callback: The callback to register.
+func OnGroupsLoaded_Register(callback GroupsLoadedCallback) Status {
+	return _OnGroupsLoaded_Register(callback)
+}
+
+var _OnGroupsLoaded_Unregister = func(callback GroupsLoadedCallback) Status {
+	var __retVal Status
+	__callback := plugify.GetFunctionPointerForDelegate(callback)
+	__retVal = Status(C.OnGroupsLoaded_Unregister(__callback))
+	return __retVal
+}
+
+// OnGroupsLoaded_Unregister 
+//  @brief Unregisters a previously registered listener for the OnGroupsLoaded event.
+//
+//  @param callback: The callback to unregister.
+func OnGroupsLoaded_Unregister(callback GroupsLoadedCallback) Status {
+	return _OnGroupsLoaded_Unregister(callback)
+}
+
 var _OnPermissionExpiration_Register = func(callback PermExpirationCallback) Status {
 	var __retVal Status
 	__callback := plugify.GetFunctionPointerForDelegate(callback)
@@ -412,7 +440,7 @@ var _OnSetParentStorage_Register = func(callback SetParentStorageCallback) Statu
 }
 
 // OnSetParentStorage_Register 
-//  @brief Registers a listener for the OnSetParentStorage event. Callback invoked when a parent group is set for a child group.
+//  @brief Registers a listener for the OnSetParentStorage event. Storage callback invoked before a parent group is set for a child group. Return `false` to cancel the change, the method then returns DBNotReady.
 //
 //  @param callback: The callback to register.
 func OnSetParentStorage_Register(callback SetParentStorageCallback) Status {
@@ -472,7 +500,7 @@ var _OnUserCookieChangeStorage_Register = func(callback UserCookieStorageCallbac
 }
 
 // OnUserCookieChangeStorage_Register 
-//  @brief Registers a listener for the OnUserCookieChangeStorage event. Callback invoked when a cookie is set for a user.
+//  @brief Registers a listener for the OnUserCookieChangeStorage event. Storage callback invoked before a cookie is set for a user. Return `false` to cancel the change, the method then returns DBNotReady.
 //
 //  @param callback: The callback to register.
 func OnUserCookieChangeStorage_Register(callback UserCookieStorageCallback) Status {
@@ -524,36 +552,6 @@ func OnUserCookieChange_Unregister(callback UserCookieCallback) Status {
 	return _OnUserCookieChange_Unregister(callback)
 }
 
-var _OnUserCreateStorage_Register = func(callback UserCreateStorageCallback) Status {
-	var __retVal Status
-	__callback := plugify.GetFunctionPointerForDelegate(callback)
-	__retVal = Status(C.OnUserCreateStorage_Register(__callback))
-	return __retVal
-}
-
-// OnUserCreateStorage_Register 
-//  @brief Registers a listener for the OnUserCreateStorage event. Callback invoked after a user is successfully created.
-//
-//  @param callback: The callback to register.
-func OnUserCreateStorage_Register(callback UserCreateStorageCallback) Status {
-	return _OnUserCreateStorage_Register(callback)
-}
-
-var _OnUserCreateStorage_Unregister = func(callback UserCreateStorageCallback) Status {
-	var __retVal Status
-	__callback := plugify.GetFunctionPointerForDelegate(callback)
-	__retVal = Status(C.OnUserCreateStorage_Unregister(__callback))
-	return __retVal
-}
-
-// OnUserCreateStorage_Unregister 
-//  @brief Unregisters a previously registered listener for the OnUserCreateStorage event.
-//
-//  @param callback: The callback to unregister.
-func OnUserCreateStorage_Unregister(callback UserCreateStorageCallback) Status {
-	return _OnUserCreateStorage_Unregister(callback)
-}
-
 var _OnUserCreate_Register = func(callback UserCreateCallback) Status {
 	var __retVal Status
 	__callback := plugify.GetFunctionPointerForDelegate(callback)
@@ -584,36 +582,6 @@ func OnUserCreate_Unregister(callback UserCreateCallback) Status {
 	return _OnUserCreate_Unregister(callback)
 }
 
-var _OnUserDeleteStorage_Register = func(callback UserDeleteStorageCallback) Status {
-	var __retVal Status
-	__callback := plugify.GetFunctionPointerForDelegate(callback)
-	__retVal = Status(C.OnUserDeleteStorage_Register(__callback))
-	return __retVal
-}
-
-// OnUserDeleteStorage_Register 
-//  @brief Registers a listener for the OnUserDeleteStorage event. Callback invoked before a user is deleted.
-//
-//  @param callback: The callback to register.
-func OnUserDeleteStorage_Register(callback UserDeleteStorageCallback) Status {
-	return _OnUserDeleteStorage_Register(callback)
-}
-
-var _OnUserDeleteStorage_Unregister = func(callback UserDeleteStorageCallback) Status {
-	var __retVal Status
-	__callback := plugify.GetFunctionPointerForDelegate(callback)
-	__retVal = Status(C.OnUserDeleteStorage_Unregister(__callback))
-	return __retVal
-}
-
-// OnUserDeleteStorage_Unregister 
-//  @brief Unregisters a previously registered listener for the OnUserDeleteStorage event.
-//
-//  @param callback: The callback to unregister.
-func OnUserDeleteStorage_Unregister(callback UserDeleteStorageCallback) Status {
-	return _OnUserDeleteStorage_Unregister(callback)
-}
-
 var _OnUserDelete_Register = func(callback UserDeleteCallback) Status {
 	var __retVal Status
 	__callback := plugify.GetFunctionPointerForDelegate(callback)
@@ -622,7 +590,7 @@ var _OnUserDelete_Register = func(callback UserDeleteCallback) Status {
 }
 
 // OnUserDelete_Register 
-//  @brief Registers a listener for the OnUserDelete event. Callback invoked before a user is deleted.
+//  @brief Registers a listener for the OnUserDelete event. Callback invoked after a user is deleted.
 //
 //  @param callback: The callback to register.
 func OnUserDelete_Register(callback UserDeleteCallback) Status {
@@ -652,7 +620,7 @@ var _OnUserGroupChangeStorage_Register = func(callback UserGroupStorageCallback)
 }
 
 // OnUserGroupChangeStorage_Register 
-//  @brief Registers a listener for the OnUserGroupChangeStorage event. Callback invoked when a group is added or removed from a user.
+//  @brief Registers a listener for the OnUserGroupChangeStorage event. Storage callback invoked before a group is added, replaced, or removed for a user. Return `false` to cancel the change, the method then returns DBNotReady.
 //
 //  @param callback: The callback to register.
 func OnUserGroupChangeStorage_Register(callback UserGroupStorageCallback) Status {
@@ -682,7 +650,7 @@ var _OnUserGroupChange_Register = func(callback UserGroupCallback) Status {
 }
 
 // OnUserGroupChange_Register 
-//  @brief Registers a listener for the OnUserGroupChange event. Callback invoked when a group is added or removed from a user.
+//  @brief Registers a listener for the OnUserGroupChange event. Callback invoked when a group is added, replaced, or removed for a user.
 //
 //  @param callback: The callback to register.
 func OnUserGroupChange_Register(callback UserGroupCallback) Status {
@@ -712,7 +680,7 @@ var _OnUserImmunityChangeStorage_Register = func(callback UserImmunityStorageCal
 }
 
 // OnUserImmunityChangeStorage_Register 
-//  @brief Registers a listener for the OnUserImmunityChangeStorage event. Callback invoked when immunity is set for a user.
+//  @brief Registers a listener for the OnUserImmunityChangeStorage event. Storage callback invoked before immunity is set for a user. Return `false` to cancel the change, the method then returns DBNotReady.
 //
 //  @param callback: The callback to register.
 func OnUserImmunityChangeStorage_Register(callback UserImmunityStorageCallback) Status {
@@ -802,7 +770,7 @@ var _OnUserPermissionChangeStorage_Register = func(callback UserPermissionStorag
 }
 
 // OnUserPermissionChangeStorage_Register 
-//  @brief Registers a listener for the OnUserPermissionChangeStorage event. Callback invoked when a permission is added, removed, or replaced for a user.
+//  @brief Registers a listener for the OnUserPermissionChangeStorage event. Storage callback invoked before a permission is added, replaced, or removed for a user. Return `false` to cancel the change, the method then returns DBNotReady.
 //
 //  @param callback: The callback to register.
 func OnUserPermissionChangeStorage_Register(callback UserPermissionStorageCallback) Status {

@@ -63,8 +63,9 @@ var _SetParent = func(pluginID int64, childName string, parentName string, dontB
 //  @param pluginID: Identifier of the plugin that calls the method.
 //  @param childName: Child group name
 //  @param parentName: Parent group name to set
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnSetParent event. The change is still applied.
 //
-//  @return Success, ChildGroupNotFound, ParentGroupNotFound
+//  @return Success, ChildGroupNotFound, ParentGroupNotFound, GroupHierarchyCycle, DBNotReady
 func SetParent(pluginID int64, childName string, parentName string, dontBroadcast bool) Status {
 	return _SetParent(pluginID, childName, parentName, dontBroadcast)
 }
@@ -296,9 +297,9 @@ var _AddPermissionGroup = func(pluginID int64, name string, perm string, dontBro
 //  @param pluginID: Identifier of the plugin that calls the method.
 //  @param name: Group name.
 //  @param perm: Permission line.
-//  @param dontBroadcast: If set to `true`, suppresses dispatching of the permission change event to registered GroupPermission listeners. The permission is still applied internally.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnGroupPermissionChange event. The change is still applied.
 //
-//  @return Success, GroupNotFound, PermAlreadyGranted
+//  @return Success, GroupNotFound, PermAlreadyGranted, InvalidPermission, DBNotReady
 func AddPermissionGroup(pluginID int64, name string, perm string, dontBroadcast bool) Status {
 	return _AddPermissionGroup(pluginID, name, perm, dontBroadcast)
 }
@@ -323,6 +324,14 @@ var _SetPermissionGroup = func(pluginID int64, name string, perm string, dontBro
 }
 
 // SetPermissionGroup 
+//  @brief Set a permission to a group (replaces its state if the permission already exists).
+//
+//  @param pluginID: Identifier of the plugin that calls the method.
+//  @param name: Group name.
+//  @param perm: Permission line.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnGroupPermissionChange event. The change is still applied.
+//
+//  @return Success, GroupNotFound, PermAlreadyGranted, InvalidPermission, DBNotReady
 func SetPermissionGroup(pluginID int64, name string, perm string, dontBroadcast bool) Status {
 	return _SetPermissionGroup(pluginID, name, perm, dontBroadcast)
 }
@@ -354,8 +363,9 @@ var _RemovePermissionGroup = func(pluginID int64, name string, perm string, recu
 //  @param name: Group name.
 //  @param perm: Permission line.
 //  @param recursiveDeletion: Delete all nested perms.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnGroupPermissionChange event. The change is still applied.
 //
-//  @return Success, GroupNotFound, PermNotFound
+//  @return Success, GroupNotFound, PermNotFound, InvalidPermission, DBNotReady
 func RemovePermissionGroup(pluginID int64, name string, perm string, recursiveDeletion bool, dontBroadcast bool) Status {
 	return _RemovePermissionGroup(pluginID, name, perm, recursiveDeletion, dontBroadcast)
 }
@@ -421,8 +431,9 @@ var _SetOptionGroup = func(pluginID int64, groupName string, optionName string, 
 //  @param groupName: Group name
 //  @param optionName: Option name
 //  @param value: Option value.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnGroupOptionChange event. The change is still applied.
 //
-//  @return Success, GroupNotFound
+//  @return Success, GroupNotFound, InvalidOptionName, DBNotReady
 func SetOptionGroup(pluginID int64, groupName string, optionName string, value any, dontBroadcast bool) Status {
 	return _SetOptionGroup(pluginID, groupName, optionName, value, dontBroadcast)
 }
@@ -491,8 +502,9 @@ var _CreateGroup = func(pluginID int64, name string, perms []string, priority in
 //  @param perms: Array of permission lines.
 //  @param priority: Group priority.
 //  @param parent: Parent group name.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnGroupCreate event. The change is still applied.
 //
-//  @return Success, GroupAlreadyExist, ParentGroupNotFound
+//  @return Success, GroupAlreadyExist, ParentGroupNotFound, InvalidGroupName, DBNotReady
 func CreateGroup(pluginID int64, name string, perms []string, priority int32, parent string, dontBroadcast bool) Status {
 	return _CreateGroup(pluginID, name, perms, priority, parent, dontBroadcast)
 }
@@ -519,8 +531,9 @@ var _DeleteGroup = func(pluginID int64, name string, dontBroadcast bool) Status 
 //
 //  @param pluginID: Identifier of the plugin that calls the method.
 //  @param name: Group name.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnGroupDelete event. The change is still applied.
 //
-//  @return Success if deleted; GroupNotFound if group not found.
+//  @return Success, GroupNotFound, DBNotReady
 func DeleteGroup(pluginID int64, name string, dontBroadcast bool) Status {
 	return _DeleteGroup(pluginID, name, dontBroadcast)
 }
@@ -562,6 +575,9 @@ var _LoadGroups = func(pluginID int64, dontBroadcast bool) Status {
 //  @brief Dispatches a request to load server groups for a plugin.
 //
 //  @param pluginID: Identifier of the calling plugin.
+//  @param dontBroadcast: If set to `true`, suppresses dispatching of the OnGroupsLoaded event.
+//
+//  @return Success, DBNotReady
 func LoadGroups(pluginID int64, dontBroadcast bool) Status {
 	return _LoadGroups(pluginID, dontBroadcast)
 }
