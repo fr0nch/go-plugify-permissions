@@ -29,6 +29,7 @@ const (
 	Status_CallbackNotFound Status = 43
 	Status_StorageError Status = 44
 	Status_DBNotReady Status = 45
+	Status_InvalidPermission Status = 46
 )
 
 type Action int32
